@@ -16,26 +16,27 @@ function LoginForm() {
     const [errorMessage, setErrorMessage] = useState(null)
 
           
-async function handleSubmit(e) {
-    const response = await fetch(`http://localhost:5001/authentication/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-    })
-
-    const data = await response.json()
-
-    if (response.status === 200) {
-        setCurrentUser(data.user)
-        history.push(`/`)
-    } else {
-        setErrorMessage(data.message)
+    async function handleSubmit(e) {
+        const response = await fetch(`http://localhost:5001/authentication/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+        });
+    
+        const data = await response.json();
+        console.log(response);
+    
+        if (response.status === 404) {
+            setErrorMessage(data.message);
+        } else if (response.status === 200) {
+            setCurrentUser(data.user);
+            history.push(`/`);
+        } else {
+            console.error(`Unexpected status code: ${response.status}`);
+        }
     }
-}
-  
-
 
     return (
         <main>
