@@ -26,12 +26,12 @@ function LoginForm() {
         });
     
         const data = await response.json();
-        console.log(response);
     
         if (response.status === 404) {
             setErrorMessage(data.message);
         } else if (response.status === 200) {
             setCurrentUser(data.user);
+            localStorage.setItem('token', data.token);
             history.push(`/`);
         } else {
             console.error(`Unexpected status code: ${response.status}`);
